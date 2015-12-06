@@ -1,11 +1,20 @@
 import React, {Component} from 'react';
+import { connect } from 'react-redux';
 
-export default class App extends Component {
-  render () {
+import { listenForPlanetChanges } from '../actions/app';
+
+import PlanetHeader from './PlanetHeader';
+
+class App extends Component {
+  componentDidMount() {
+    this.props.dispatch(listenForPlanetChanges());
+  }
+
+  render() {
     return (
       <div className="app-container">
         <div className="css-root">
-          <h1 className="css-planet-monitor">Obi-Wan currently on Tatooine</h1>
+          <PlanetHeader planet={this.props.planet} />
 
           <section className="css-scrollable-list">
             <ul className="css-slots">
@@ -41,3 +50,5 @@ export default class App extends Component {
     );
   }
 }
+
+export default connect((state) => ({ planet: state.app.planet }))(App);
