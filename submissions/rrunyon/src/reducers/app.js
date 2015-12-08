@@ -1,7 +1,21 @@
-import { UPDATE_PLANET } from '../constants';
+import { UPDATE_PLANET, UPDATE_LIST } from '../constants';
 
 function initialState() {
-  return {};
+  return {
+    list: [
+      null, null, null, null, null
+    ]
+  };
+}
+
+function processList(list, index, jedi) {
+  return list.map((obj, i) => {
+    if (i === index) {
+      return jedi;
+    } else {
+      return obj;
+    }
+  });
 }
 
 export default function appReducer(state = initialState(), action) {
@@ -10,7 +24,14 @@ export default function appReducer(state = initialState(), action) {
       return {
         ...state,
         planet: action.payload.planet
-      }
+      };
+    case UPDATE_LIST:
+      return {
+        ...state,
+        list: processList(state.list,
+                          action.payload.index,
+                          { ...action.payload })
+      };
     default:
       return state;
   }
