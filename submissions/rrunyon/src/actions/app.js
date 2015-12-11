@@ -1,3 +1,5 @@
+import axios from 'axios';
+
 import { UPDATE_PLANET, UPDATE_LIST } from '../constants';
 
 // enter load loop when app loads and list changes
@@ -9,21 +11,25 @@ import { UPDATE_PLANET, UPDATE_LIST } from '../constants';
 // on scroll remove two items from the list and bump the remaining into their
 // position
 
-function loadApprentices() {
-  while this.getState.next is null
-  load the last guys apprentice
+export function loadJedi(url, index) {
+  return (dispatch) => {
+    axios.get(url)
+      .then((res) => {
+        return res.data;
+      })
+      .then((jedi) => {
+        dispatch({
+          type: UPDATE_LIST,
+          payload: {
+            ...jedi,
+            index: index
+          }
+        });
+      });
+  }
 }
 
-function loadMasters() {
-  while this.getstate.prev is null
-  loda the last guys master
-}
-
-export function initializeApp() {
-  return listenForPlanetChanges() && loadJediList();
-}
-
-function listenForPlanetChanges() {
+export function listenForPlanetChanges() {
   return (dispatch) => {
     const socket = new WebSocket('ws://localhost:4000');
     
@@ -35,24 +41,5 @@ function listenForPlanetChanges() {
         }
       });
     };
-  }
-}
-
-function loadJediList() {
-  return (dispatch) => {
-    fetch('http://localhost:3000/dark-jedis/3616')
-      .then((res) => {
-        return res.json();
-      })
-      .then((jedi) => {
-        dispatch({
-          type: UPDATE_LIST,
-          payload: {
-            name: jedi.name,
-            homeworld: jedi.homeworld.name,
-            index: 0
-          }
-        });
-      });
   }
 }

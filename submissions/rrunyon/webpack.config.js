@@ -23,8 +23,8 @@ module.exports = {
     filename: 'index.js'
   },
   devServer: {
-    contentBase: './dist',
-    hot: true
+    contentBase: './dist'
+    // hot: true
   },
   plugins: [
     new webpack.HotModuleReplacementPlugin()

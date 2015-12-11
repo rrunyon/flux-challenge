@@ -11,7 +11,7 @@ export default class List extends Component {
         return (
           <li className="css-slot" key={i}>
             <h3>{jedi.name}</h3>
-            <h6>Homeworld: {jedi.homeworld}</h6>
+            <h6>Homeworld: {jedi.homeworld.name}</h6>
           </li>
         );
       } else {
