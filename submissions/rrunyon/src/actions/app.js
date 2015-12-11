@@ -1,6 +1,13 @@
-import axios from 'axios';
+import request from 'superagent';
 
-import { UPDATE_PLANET, UPDATE_LIST } from '../constants';
+import {
+  UPDATE_PLANET,
+  UPDATE_LIST,
+  SCROLL_UP,
+  SCROLL_DOWN,
+  FREEZE,
+  UNFREEZE
+} from '../constants';
 
 // enter load loop when app loads and list changes
 // terminate when done
@@ -13,24 +20,24 @@ import { UPDATE_PLANET, UPDATE_LIST } from '../constants';
 
 export function loadJedi(url, index) {
   return (dispatch) => {
-    axios.get(url)
-      .then((res) => {
-        return res.data;
-      })
-      .then((jedi) => {
-        dispatch({
-          type: UPDATE_LIST,
-          payload: {
-            ...jedi,
-            index: index
-          }
-        });
+    request
+      .get(url)
+      .end((err, res) => {
+        if (!err) {
+          dispatch({
+            type: UPDATE_LIST,
+            payload: {
+              ...res.body,
+              index: index
+            }
+          });
+        }
       });
-  }
+  };
 }
 
 export function listenForPlanetChanges() {
-  return (dispatch) => {
+  return (dispatch, getState) => {
     const socket = new WebSocket('ws://localhost:4000');
     
     socket.onmessage = (event) => {
@@ -41,5 +48,29 @@ export function listenForPlanetChanges() {
         }
       });
     };
+  }
+}
+
+export function scrollUp() {
+  return {
+    type: SCROLL_UP
+  }
+}
+
+export function scrollDown() {
+  return {
+    type: SCROLL_DOWN
+  }
+}
+
+export function freeze() {
+  return {
+    type: FREEZE
+  }
+}
+
+export function unFreeze() {
+  return {
+    type: UNFREEZE
   }
 }

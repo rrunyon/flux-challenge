@@ -1,4 +1,11 @@
-import { UPDATE_PLANET, UPDATE_LIST } from '../constants';
+import {
+  UPDATE_PLANET,
+  UPDATE_LIST,
+  SCROLL_UP,
+  SCROLL_DOWN,
+  FREEZE,
+  UNFREEZE
+} from '../constants';
 
 function initialState() {
   return {
@@ -32,6 +39,34 @@ export default function appReducer(state = initialState(), action) {
                           action.payload.index,
                           { ...action.payload })
       };
+    case SCROLL_UP:
+      return {
+        ...state,
+        list: [
+          null,
+          null,
+          ...state.list.slice(0, 3)
+        ]
+      }
+    case SCROLL_DOWN:
+      return {
+        ...state,
+        list: [
+          ...state.list.slice(2),
+          null,
+          null
+        ]
+      }
+    case FREEZE:
+      return {
+        ...state,
+        freeze: true
+      }
+    case UNFREEZE:
+      return {
+        ...state,
+        freeze: false
+      }
     default:
       return state;
   }
